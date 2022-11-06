@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>TP:TW</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">  
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+
+    <div class="navbar">
+      <div id="titleDiv">
+        <span class="titleText">TP:TW NYC</span>
+        <span class="subTitleText">Tax Photo Time Warp</span>
+      </div>
+      <div id ="menuHolder">
+        <ul class="menuLevelOne">
+          <li class="menuLevelTwo">
+            <span id="info" class="menuText">About</span>
+          </li>
+          <li class="menuLevelTwo">
+              <span id="timeWarp" class="menuText">Time Warp</span>
+          </li>
+          <li class="menuLevelTwo">
+              <span id="search" class="menuText">Search</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <div id="infoHolder">
+      <div class="infoClose"><i class="fa-solid fa-xmark" id="infoX"></i></div>
+      <div class="infoDiv">
+        <div class="infoTitle">Information</div>
+        <div id="infoText">Between 1939 and 1941, the Works Progress Administration, in conjunction with the New York City Department of Taxation, organized teams of photographers to shoot pictures of every building in the five boroughs of New York City. The photographs were taken to improve the process of determining and recording property value assessments.<br> By the early 1980s, the Department of Finance determined that the 1939/40 photographs were too out-dated for property tax appraisal purposes. From 1983 to 1988, using 35mm cameras, they photographed every property in the five boroughs, including vacant lots and tax-exempt buildings. They used color film stock producing over 800,000 photographs in both print and negative formats. Taking advantage of then-new technology ca. 1989, they recorded each print as a single frame on Laser Video Disks (LVDs), using analog video capture. The Archives extracted low-resolution tiffs of each frame from the LVDs for viewing in the gallery. High-resolution scans or prints can be ordered from the original negatives.</div>
+      </div>
+    </div>
+
+    <div id="decadeButtonHolder">
+        <div class="switchClose"><i class="fa-solid fa-xmark" id="switchX"></i></div>
+        <div class="titleHolder">
+          <div class="switchTitle">Switch Decades</div>
+          <div class="switchHolderOverall">
+            <div class="holderText">
+              <div class="switchText40">1940s</div>
+              <div class="switchSubText40">Tax Photos</div>
+            </div>
+            <div class="switchHolder">
+              <label class="switch">
+                <input type="checkbox" id="switch">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="holderText">  
+              <div class="switchText80">1980s</div>
+              <div class="switchSubText80">Tax Photos</div>
+            </div>
+          </div>
+        </div> 
+    </div>
+
+    <div id="searchBarHolder">
+      <div class="switchClose"><i class="fa-solid fa-xmark" id="searchX"></i></div>
+      <div class="searchHolder">
+        <div class="searchTitle">Search by Address</div>
+        <div id="addSearch"></div>
+      </div>
+    </div>
+
+    <div class="card" id="cardId">
+      <div id="cardClose"><i class="fa-solid fa-xmark" id="cardX"></i></div>
+      <img src="https://photos.1940s.nyc/jpg/nynyma_rec0040_1_00069_0039b.jpg" class="cardImage" id="cardImageId">
+      <div class="container">
+        <h3 id="addressText"></h3>
+        <div class="bblHolder"><h4>Manhattan Block:</h4><h4 id=blockText></h4><h4>Lot:</h4><h4 id=lotText></h4></div>
+
+        <div id='buttonHolder'>
+          <button id='left'><i class="fa-solid fa-circle-left"></i></button>
+            <div id='counterHolder'><h4>Image</h4><h4 id='counterText'>1</h4><h4>/</h4><h4 id='totalText'></h4></div>
+          <button id='right'><i class="fa-solid fa-circle-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loaderDiv">
+      <div class="loaderBox">
+        <span class="loaderGraphic"></span>
+        <div class="loaderTextHolder">
+          <div class="loaderText">Loading</div><span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+      </div>
+    </div>  
+
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://js.arcgis.com/4.23/"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/renderers.js"></script>
+    
+  </body>
+</html>
