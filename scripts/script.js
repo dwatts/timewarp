@@ -390,7 +390,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         var length= getUrl.length
 
         if (length == 0) {
-          getUrl.push('/assets/Image40.png')
+          getUrl.push('../assets/Image40.png')
           document.getElementById("buttonHolder").style.display="none";
         } else if (length == 1) {
           document.getElementById("buttonHolder").style.display="none";
@@ -501,7 +501,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         var length1980 = getUrl1980.length
 
         if (length1980 == 0) {
-          getUrl1980.push('/assets/Image80.png')
+          getUrl1980.push('../assets/Image80.png')
           document.getElementById("buttonHolder").style.display="none";
         } else if (length1980 == 1) {
           document.getElementById("buttonHolder").style.display="none";
@@ -599,7 +599,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       symbolLayers: [
         {
           type: "object",
-          resource: { href: "/assets/Info.glb" },
+          resource: { href: './assets/Info.glb'},
           material: { color: [48, 48, 48] },
           height: 200,
           heading: 0,
@@ -621,7 +621,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       symbolLayers: [
         {
           type: "object",
-          resource: { href: "/assets/Info.glb" },
+          resource: { href: './assets/Info.glb'},
           material: { color: [16, 231, 226] },
           height: 200,
           heading: 0,
@@ -648,7 +648,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       symbolLayers: [
         {
           type: "object",
-          resource: { href: "/assets/1940s.glb" },
+          resource: { href: './assets/1940s.glb'},
           material: { color: [48, 48, 48] },
           height: 150,
           heading: 0,
@@ -672,7 +672,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       symbolLayers: [
         {
           type: "object",
-          resource: { href: "/assets/1980s.glb" },
+          resource: { href: './assets/1980s.glb'},
           material: { color: [16, 231, 226] },
           height: 150,
           heading: 0,
@@ -707,7 +707,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       symbolLayers: [
         {
           type: "object",
-          resource: { href: "/assets/MerchantShip.glb" },
+          resource: { href: './assets/MerchantShip.glb'},
           height: 50,
           heading: 185,
           tilt:0,
@@ -765,7 +765,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       symbolLayers: [
         {
           type: "object",
-          resource: { href: "/assets/MerchantShipTwo.glb" },
+          resource: { href: './assets/MerchantShipTwo.glb'},
           height: 45,
           heading: 50,
           tilt:0,
@@ -823,7 +823,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       symbolLayers: [
         {
           type: "object",
-          resource: { href: "/assets/MerchantShipThree.glb" },
+          resource: { href: './assets/MerchantShipThree.glb' },
           height: 36,
           heading: 5,
           tilt:0,
@@ -985,7 +985,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
           symbolLayers: [
             {
               type: "object",
-              resource: { href: "/assets/Arrow.glb" },
+              resource: { href: './assets/Arrow.glb'},
               material: { color: initColor },
               height: 60,
               tilt: 0,
