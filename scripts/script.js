@@ -390,7 +390,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         var length= getUrl.length
 
         if (length == 0) {
-          getUrl.push('../assets/Image40.png')
+          getUrl.push('./assets/Image40.png')
           document.getElementById("buttonHolder").style.display="none";
         } else if (length == 1) {
           document.getElementById("buttonHolder").style.display="none";
@@ -501,7 +501,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         var length1980 = getUrl1980.length
 
         if (length1980 == 0) {
-          getUrl1980.push('../assets/Image80.png')
+          getUrl1980.push('./assets/Image80.png')
           document.getElementById("buttonHolder").style.display="none";
         } else if (length1980 == 1) {
           document.getElementById("buttonHolder").style.display="none";
