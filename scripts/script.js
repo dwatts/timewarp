@@ -560,7 +560,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
         let result = hitTestResult.results[0];
 
-        console.log(infoGraphicsLayer.graphics.items[0]);
+        //console.log(infoGraphicsLayer.graphics.items[0]);
 
         highlight && highlight.remove(); 
         highlight = view.highlight(result.graphic); 
@@ -571,7 +571,9 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         document.getElementById("infoHolder").style.display="flex";
 
     } else {
-        highlight.remove();
+        if (hitTestResult.results.length == 0) {
+          highlight.remove();
+        } else {};
         document.getElementById("cardImageId").src = "#";
         document.getElementById("cardId").style.display="none";
       }
