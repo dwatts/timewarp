@@ -1,30 +1,4 @@
-require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/SceneLayer", "esri/layers/FeatureLayer", /*"esri/layers/WebTileLayer", "esri/Basemap",*/ "esri/widgets/Zoom", "esri/widgets/Search", "esri/geometry/Polygon", "esri/tasks/Locator", "esri/Graphic", "esri/layers/GraphicsLayer", "esri/geometry/Point", "esri/core/watchUtils", "esri/symbols/TextSymbol" /*"esri/symbols/SimpleMarkerSymbol", "esri/symbols/PointSymbol3D"*/], (Map,/* WebScene,*/ SceneView, SceneLayer, FeatureLayer, /*WebTileLayer, Basemap,*/ Zoom, Search, Polygon, Locator, Graphic, GraphicsLayer, Point, watchUtils, TextSymbol /*SimpleMarkerSymbol, PointSymbol3D*/ ) => {
-
-  // Add WebTileLayer
-
-  /*const stamen = new WebTileLayer({
-    urlTemplate: 'http://{subDomain}.basemaps.cartocdn.com/light_all/{level}/{col}/{row}.png',
-    subDomains: ["a","b","c"],
-    copyright: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-    visible: true
-  })
-
-  const baseLayer = new WebTileLayer({
-    urlTemplate: "https://stamen-tiles-{subDomain}.a.ssl.fastly.net/terrain/{level}/{col}/{row}.png",
-    subDomains: ["a", "b", "c", "d"],
-    copyright:
-      'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, ' +
-      'under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ' +
-      'Data by <a href="http://openstreetmap.org/">OpenStreetMap</a>, ' +
-      'under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
-  });
-
-  const stamen = new Basemap({
-    baseLayers: [baseLayer],
-    title: "Toner-Lite",
-    id: "Toner-Lite",
-    thumbnailUrl: "https://stamen-tiles.a.ssl.fastly.net/terrain/10/177/409.png"
-  });*/
+require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/SceneLayer", "esri/layers/FeatureLayer", /*"esri/layers/WebTileLayer", "esri/Basemap", "esri/widgets/Zoom",*/ "esri/widgets/Search", "esri/geometry/Polygon", /*"esri/tasks/Locator",*/ "esri/Graphic", "esri/layers/GraphicsLayer", "esri/geometry/Point", "esri/core/watchUtils"/*,  "esri/symbols/TextSymbol", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PointSymbol3D"*/], (Map,/* WebScene,*/ SceneView, SceneLayer, FeatureLayer, /*WebTileLayer, Basemap, Zoom,*/ Search, Polygon, /* Locator,*/ Graphic, GraphicsLayer, Point, watchUtils, /*TextSymbol, SimpleMarkerSymbol, PointSymbol3D*/ ) => {
 
   // Individual Landmarks Boundaries
 
@@ -128,7 +102,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
     },
     constraints: {
       altitude: {
-        min: 500,
+        min: 200,
         max: 10000,
       },
       /*tilt: {
@@ -173,176 +147,22 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
     });
   })
 
-
-  /*******Launch Info Div*********/
-
-  document.getElementById("info").addEventListener("click", openInfo);
-
-  function openInfo() {
-    document.getElementById("infoHolder").style.display = "flex";
-    document.getElementById("cardImageId").src = "#";
-    document.getElementById("cardId").style.display="none";
-    document.getElementById("infoText").scroll(0,0);
-    highlight && highlight.remove(); 
-    highlight = view.highlight(infoGraphicsLayer.graphics.items[0]); 
-  }
-
-  /*******Close Info Div*********/
-
-  document.getElementById("infoX").addEventListener("click", closeInfo);
-
-  function closeInfo() {
-    document.getElementById("infoHolder").style.display = "none";
-    highlight.remove();
-    
-  }
-
-  /*******Launch Search Bar*********/
-
-  let searchFlag = 1;
-
-  document.getElementById("search").addEventListener("click", openSearch);
-
-  function openSearch() {
-    if (searchFlag == 1) {
-      document.getElementById("searchBarHolder").style.display = "flex";
-      highlight.remove();
-      document.getElementById("cardImageId").src = "#";
-      document.getElementById("cardId").style.display="none";
-    } else if (searchFlag == 0) {
-      addSearch.clear();
-      searchFlag = 1;
-      document.getElementById("search").innerHTML = "Search";
-    }
-  }
-
-  /*******Close Search Bar*********/
-
-  document.getElementById("searchX").addEventListener("click", closeSearch);
-
-  function closeSearch() {
-    document.getElementById("searchBarHolder").style.display = "none";
-  }
-
-  /*******Launch Era Switch*********/
-
-  document.getElementById("timeWarp").addEventListener("click", timeWarp);
-
-  function timeWarp() {
-    document.getElementById("decadeButtonHolder").style.display = "flex";
-    highlight.remove();
-    document.getElementById("cardImageId").src = "#";
-    document.getElementById("cardId").style.display="none";
-  }
-
-  /*******Close Era *********/
-
-  document.getElementById("switchX").addEventListener("click", closeTimeWarp);
-
-  function closeTimeWarp() {
-    document.getElementById("decadeButtonHolder").style.display = "none";
-  }
-
-  /*******Era Switch*********/
-
-  function year1940() {
-    desBuildings.renderer = desRenderer40;
-    document.getElementsByClassName("titleText")[0].style.color="#000";
-    document.getElementsByClassName("switchText80")[0].style.opacity=0.5;
-    document.getElementsByClassName("switchText40")[0].style.opacity=1;
-    document.getElementsByClassName("switchSubText80")[0].style.opacity=0.5;
-    document.getElementsByClassName("switchSubText40")[0].style.opacity=1;
-    document.getElementById("cardClose").style.borderColor="#000";
-    document.getElementById("cardX").style.color="#000";
-    document.getElementsByClassName("titleText")[0].style.textShadow = "4px 4px #c2c2c2, 8px 8px #575757";
-    letterGraphicsLayer.add(letterGraphic1940);
-    letterGraphicsLayer.remove(letterGraphic1980);
-    infoGraphicsLayer.add(infoGraphic1940);
-    infoGraphicsLayer.remove(infoGraphic1980);
-    if (arrowLayer.graphics.items.length > 0) {
-      arrowLayer.graphics.items[0].symbol.symbolLayers.items[0].material.color = [48,48,48];
-    } else {
-      ""
-    };
-    if (highlight == undefined) {
-      ""
-    } else {
-    highlight.remove();
-    };
-    view.highlightOptions = highlight40;
-    document.getElementById("cardImageId").style.maxWidth = "500px";
-  };
-
-  function year1980() {
-    desBuildings.renderer = desRenderer80;
-    document.getElementsByClassName("titleText")[0].style.color="#20D4CF";
-    document.getElementsByClassName("switchText80")[0].style.opacity=1;
-    document.getElementsByClassName("switchText40")[0].style.opacity=0.5;
-    document.getElementsByClassName("switchSubText80")[0].style.opacity=1;
-    document.getElementsByClassName("switchSubText40")[0].style.opacity=0.5;
-    document.getElementById("cardClose").style.borderColor="#ec38bc";
-    document.getElementById("cardX").style.color="#ec38bc";
-    document.getElementsByClassName("titleText")[0].style.textShadow = "4px 4px #ec38bc, 8px 8px #7303c0";
-    letterGraphicsLayer.add(letterGraphic1980);
-    letterGraphicsLayer.remove(letterGraphic1940);
-    infoGraphicsLayer.add(infoGraphic1980);
-    infoGraphicsLayer.remove(infoGraphic1940);
-    if (arrowLayer.graphics.items.length > 0) {
-      arrowLayer.graphics.items[0].symbol.symbolLayers.items[0].material.color = [16, 231, 226];
-    } else {
-      ""
-    };
-    if (highlight == undefined) {
-      ""
-    } else {
-    highlight.remove();
-    };
-    view.highlightOptions = highlight80;
-    document.getElementById("cardImageId").style.maxWidth = "600px";
-  };
-
-  const timeWarpSwitch = document.getElementById("switch");
-  timeWarpSwitch.addEventListener("click", function() {
-    if (setImageYear == 1) {
-        setImageYear = 0;
-        document.getElementById("cardId").style.display="none";
-        year1980();
-    } else if (setImageYear == 0) {
-        setImageYear = 1;
-        document.getElementById("cardId").style.display="none";
-        year1940();
-    }
-});
-
-  /*******HitTest Hover Code************/
-
-  view.on("pointer-move", (event) => {
-    const opts = {
-      include: infoGraphicsLayer
-    }
-    view.hitTest(event, opts).then((response) => {
-      if (response.results.length) {
-        document.getElementById("viewDiv").style.cursor = "pointer";
-      } else {
-        document.getElementById("viewDiv").style.cursor = "default";
-      }
-    });
-  });
-
   /*******HitTest Click Code************/
 
   let highlight;
   let currentGraphic;
   let setImageYear = 1;
+  let countNumber = 0;
 
   view.on("immediate-click", (event) => {
     view.hitTest(event).then((hitTestResult) => {
 
       if (hitTestResult.results.length > 0 && hitTestResult.results[0].graphic.layer.url == "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_Buildings/SceneServer" && setImageYear == 1) {
 
+        //countNumber = 1;
+
         document.getElementById("cardImageId").src = "#";
 
-        desType = hitTestResult.results[0].graphic.attributes.DesType;
         one_block = hitTestResult.results[0].graphic.attributes.one_block;
         one_lot = hitTestResult.results[0].graphic.attributes.one_lot;
         address = hitTestResult.results[0].graphic.attributes.address;
@@ -353,11 +173,17 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
         let result = hitTestResult.results[0];
 
-        if (result.graphic === currentGraphic) {}
-        else {
-          highlight && highlight.remove(); 
+        if (countNumber == 0) {
+          highlight; 
           highlight = view.highlight(result.graphic); 
           currentGraphic = result.graphic;
+          countNumber ++;
+        } else if (countNumber > 0){;
+          highlight && highlight.remove();;
+          highlight = view.highlight(result.graphic); 
+          currentGraphic = result.graphic;
+        } else {
+          highlight.remove();
         };
 
         //1940s Photos Ajax Call
@@ -451,7 +277,6 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
         document.getElementById("cardImageId").src = "#";
 
-        desType = hitTestResult.results[0].graphic.attributes.DesType;
         one_block = hitTestResult.results[0].graphic.attributes.one_block;
         one_lot = hitTestResult.results[0].graphic.attributes.one_lot;
         address = hitTestResult.results[0].graphic.attributes.address;
@@ -462,11 +287,17 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
         let result = hitTestResult.results[0];
 
-        if (result.graphic === currentGraphic) {}
-        else {
-          highlight && highlight.remove(); 
+        if (countNumber == 0) {
+          highlight; 
           highlight = view.highlight(result.graphic); 
           currentGraphic = result.graphic;
+          countNumber ++;
+        } else if (countNumber > 0){;
+          highlight && highlight.remove();;
+          highlight = view.highlight(result.graphic); 
+          currentGraphic = result.graphic;
+        } else {
+          highlight.remove();
         };
   
         //1980s Photos Ajax Call
@@ -560,20 +391,31 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
         let result = hitTestResult.results[0];
 
-        //console.log(infoGraphicsLayer.graphics.items[0]);
-
-        highlight && highlight.remove(); 
-        highlight = view.highlight(result.graphic); 
-        currentGraphic = result.graphic;
+        if (countNumber == 0) {
+          highlight; 
+          highlight = view.highlight(result.graphic); 
+          currentGraphic = result.graphic;
+          countNumber ++;
+        } else if (countNumber > 0){;
+          highlight && highlight.remove();;
+          highlight = view.highlight(result.graphic); 
+          currentGraphic = result.graphic;
+        } else {
+          highlight.remove();
+        };
 
         document.getElementById("cardId").style.display="none";
-        //$('#infoHolder').fadeIn(500);
         document.getElementById("infoHolder").style.display="flex";
 
     } else {
-        if (hitTestResult.results.length == 0) {
+
+        if (countNumber > 0) {
           highlight.remove();
-        } else {};
+          countNumber = 0;
+        };
+
+        console.log(countNumber);
+
         document.getElementById("cardImageId").src = "#";
         document.getElementById("cardId").style.display="none";
       }
@@ -583,12 +425,180 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
     });
   });
 
+  /*******Launch Info Div*********/
+
+  document.getElementById("info").addEventListener("click", openInfo);
+
+  function openInfo() {
+    document.getElementById("infoHolder").style.display = "flex";
+    document.getElementById("cardImageId").src = "#";
+    document.getElementById("cardId").style.display="none";
+    document.getElementById("infoText").scroll(0,0);
+    
+    if (countNumber > 0) {
+      highlight && highlight.remove();
+      highlight = view.highlight(infoGraphicsLayer.graphics.items[0]);
+      countNumber = 0;
+    } else {
+      highlight;
+      highlight = view.highlight(infoGraphicsLayer.graphics.items[0]);
+    };
+  }
+
+  /*******Close Info Div*********/
+
+  document.getElementById("infoX").addEventListener("click", closeInfo);
+
+  function closeInfo() {
+    document.getElementById("infoHolder").style.display = "none";
+    highlight.remove();
+    
+  }
+
+  /*******Launch Search Bar*********/
+
+  let searchFlag = 1;
+
+  document.getElementById("search").addEventListener("click", openSearch);
+
+  function openSearch() {
+    if (searchFlag == 1) {
+      document.getElementById("searchBarHolder").style.display = "flex";
+      if (countNumber > 0) {
+        highlight.remove();
+        countNumber = 0;
+      };
+      document.getElementById("cardImageId").src = "#";
+      document.getElementById("cardId").style.display="none";
+    } else if (searchFlag == 0) {
+      addSearch.clear();
+      searchFlag = 1;
+      document.getElementById("search").innerHTML = "Search";
+    }
+  }
+
+  /*******Close Search Bar*********/
+
+  document.getElementById("searchX").addEventListener("click", closeSearch);
+
+  function closeSearch() {
+    document.getElementById("searchBarHolder").style.display = "none";
+  }
+
+  /*******Launch Era Switch*********/
+
+  document.getElementById("timeWarp").addEventListener("click", timeWarp);
+
+  function timeWarp() {
+    document.getElementById("decadeButtonHolder").style.display = "flex";
+    if (countNumber > 0) {
+      highlight.remove();
+      countNumber = 0;
+    };
+    document.getElementById("cardImageId").src = "#";
+    document.getElementById("cardId").style.display="none";
+  }
+
+  /*******Close Era *********/
+
+  document.getElementById("switchX").addEventListener("click", closeTimeWarp);
+
+  function closeTimeWarp() {
+    document.getElementById("decadeButtonHolder").style.display = "none";
+  }
+
+  /*******Era Switch*********/
+
+  function year1940() {
+    desBuildings.renderer = desRenderer40;
+    document.getElementsByClassName("titleText")[0].style.color="#000";
+    document.getElementsByClassName("switchText80")[0].style.opacity=0.5;
+    document.getElementsByClassName("switchText40")[0].style.opacity=1;
+    document.getElementsByClassName("switchSubText80")[0].style.opacity=0.5;
+    document.getElementsByClassName("switchSubText40")[0].style.opacity=1;
+    document.getElementById("cardClose").style.borderColor="#000";
+    document.getElementById("cardX").style.color="#000";
+    document.getElementsByClassName("titleText")[0].style.textShadow = "4px 4px #c2c2c2, 8px 8px #575757";
+    letterGraphicsLayer.add(letterGraphic1940);
+    letterGraphicsLayer.remove(letterGraphic1980);
+    infoGraphicsLayer.add(infoGraphic1940);
+    infoGraphicsLayer.remove(infoGraphic1980);
+    if (arrowLayer.graphics.items.length > 0) {
+      arrowLayer.graphics.items[0].symbol.symbolLayers.items[0].material.color = [48,48,48];
+    } else {
+      ""
+    };
+    if (countNumber > 0) {
+      highlight.remove();
+    };
+    view.highlightOptions = highlight40;
+    document.getElementById("cardImageId").style.maxWidth = "500px";
+  };
+
+  function year1980() {
+    desBuildings.renderer = desRenderer80;
+    document.getElementsByClassName("titleText")[0].style.color="#20D4CF";
+    document.getElementsByClassName("switchText80")[0].style.opacity=1;
+    document.getElementsByClassName("switchText40")[0].style.opacity=0.5;
+    document.getElementsByClassName("switchSubText80")[0].style.opacity=1;
+    document.getElementsByClassName("switchSubText40")[0].style.opacity=0.5;
+    document.getElementById("cardClose").style.borderColor="#ec38bc";
+    document.getElementById("cardX").style.color="#ec38bc";
+    document.getElementsByClassName("titleText")[0].style.textShadow = "4px 4px #ec38bc, 8px 8px #7303c0";
+    letterGraphicsLayer.add(letterGraphic1980);
+    letterGraphicsLayer.remove(letterGraphic1940);
+    infoGraphicsLayer.add(infoGraphic1980);
+    infoGraphicsLayer.remove(infoGraphic1940);
+    if (arrowLayer.graphics.items.length > 0) {
+      arrowLayer.graphics.items[0].symbol.symbolLayers.items[0].material.color = [16, 231, 226];
+    } else {
+      ""
+    };
+    if (countNumber > 0) {
+      highlight.remove();
+    };
+    view.highlightOptions = highlight80;
+    document.getElementById("cardImageId").style.maxWidth = "600px";
+  };
+
+  const timeWarpSwitch = document.getElementById("switch");
+  timeWarpSwitch.addEventListener("click", function() {
+    if (setImageYear == 1) {
+        countNumber = 0;
+        setImageYear = 0;
+        document.getElementById("cardId").style.display="none";
+        year1980();
+    } else if (setImageYear == 0) {
+        countNumber = 0;
+        setImageYear = 1;
+        document.getElementById("cardId").style.display="none";
+        year1940();
+    }
+});
+
+  /*******HitTest Hover Code************/
+
+  view.on("pointer-move", (event) => {
+    const opts = {
+      include: infoGraphicsLayer
+    }
+    view.hitTest(event, opts).then((response) => {
+      if (response.results.length) {
+        document.getElementById("viewDiv").style.cursor = "pointer";
+      } else {
+        document.getElementById("viewDiv").style.cursor = "default";
+      }
+    });
+  });
+
+
   /*********Mobile Close Card X************/
 
   document.getElementById("cardClose").addEventListener("click", closeCardX);
 
   function closeCardX() {
     highlight.remove();
+    countNumber = 0;
     document.getElementById("cardImageId").src = "#";
     document.getElementById("cardId").style.display="none";   
   }
@@ -863,9 +873,10 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
   /*************Address Finder**************/
 
   const addSource = [{
-      locator: new Locator({
+      /*locator: new Locator({
         url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer", 
-      }),
+      }),*/
+      url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
       filter: {
           geometry: new Polygon({
               "rings": [
@@ -944,7 +955,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         initColor = [16, 231, 226];
       };
 
-      /********Practice Code*********/
+      /********Create address finder label*********/
 
       const textSymbol = {
         type: "text", // autocasts as new TextSymbol()
@@ -973,7 +984,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
       })
 
-      /********End Practice Code*********/
+      /********Create Arrow Graphic*********/
 
 
       const arrowGraphic = new Graphic({
