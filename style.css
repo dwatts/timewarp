@@ -205,6 +205,7 @@ h4 {
   top: 0;
   width: 100vw;
   height: 100vh;
+  max-height: -webkit-fill-available;
   overflow: auto;
   background-color: rgba(255,255,255, 0.5);
   justify-content: center;
@@ -412,6 +413,7 @@ input:checked + .slider:before {
   top: 0;
   width: 100vw;
   height: 100vh;
+  max-height: -webkit-fill-available;
   overflow: auto;
   background-color: rgba(255,255,255, 0.5);
   justify-content: center;
@@ -466,6 +468,7 @@ input:checked + .slider:before {
   top: 0;
   width: 100vw;
   height: 100vh;
+  max-height: -webkit-fill-available;
   overflow: auto;
   background-color: rgba(255,255,255, 0.5);
   justify-content: center;
@@ -598,6 +601,7 @@ input:checked + .slider:before {
   top: 0;
   width: 100vw;
   height: 100vh;
+  max-height: -webkit-fill-available;
   overflow: auto;
   background-color: rgba(255,255,255, 0.5);
   display: flex;

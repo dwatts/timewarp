@@ -166,8 +166,6 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         one_block = hitTestResult.results[0].graphic.attributes.one_block;
         one_lot = hitTestResult.results[0].graphic.attributes.one_lot;
         address = hitTestResult.results[0].graphic.attributes.address;
-
-        document.getElementById("cardId").style.display="block";
         
         //Add Graphics//
 
@@ -271,6 +269,10 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         $('#lotText').html(`${one_lot}`);
         $('#counterText').text("1");
 
+        $('#cardImageId').on('load', function(){
+          document.getElementById("cardId").style.display="block"
+        });
+
 /****************Begin 1980s Code*****************/
 
       } else if (hitTestResult.results.length > 0 && hitTestResult.results[0].graphic.layer.url == "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_Buildings/SceneServer" && setImageYear == 0) {
@@ -281,8 +283,6 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         one_lot = hitTestResult.results[0].graphic.attributes.one_lot;
         address = hitTestResult.results[0].graphic.attributes.address;
 
-        document.getElementById("cardId").style.display="block";
-        
         //Add Graphics//
 
         let result = hitTestResult.results[0];
@@ -386,6 +386,10 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
         $('#blockText').html(`${one_block}`);
         $('#lotText').html(`${one_lot}`);
         $('#counterText').text("1");
+        
+        $('#cardImageId').on('load', function(){
+          document.getElementById("cardId").style.display="block"
+        });
 
       } else if (hitTestResult.results.length > 0 && hitTestResult.results[0].graphic.layer.id == "infoLayer") {
 
