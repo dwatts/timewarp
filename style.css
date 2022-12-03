@@ -7,6 +7,10 @@ body,
   width: 100vw;
   z-index: 1;
   font-family: 'Poppins', san-serif;
+  position: fixed;
+  min-height: 100vh;
+  min-height: fill-available;
+  min-height: -webkit-fill-available;
 }
 
 h2 {
@@ -650,7 +654,7 @@ input:checked + .slider:before {
   top: 50%;
   background: #ec38bc;
   width: 3px;
-  height: 29px;
+  height: 25px;
   border-radius: 10px;
   /*transform: translateX(-50%);*/
   animation: spin 72s linear infinite;
