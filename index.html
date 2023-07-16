@@ -4,7 +4,7 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title>TP:TW</title>
 
-    <link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">  
     <link rel="stylesheet" href="style.css">
@@ -36,8 +36,17 @@
     <div id="infoHolder">
       <div class="infoClose"><i class="fa-solid fa-xmark" id="infoX"></i></div>
       <div class="infoDiv">
-        <div class="infoTitle">Information</div>
-        <div id="infoText">TEST TEXT TWO Between 1939 and 1941, the Works Progress Administration, in conjunction with the New York City Department of Taxation, organized teams of photographers to shoot pictures of every building in the five boroughs of New York City. The photographs were taken to improve the process of determining and recording property value assessments.<br> By the early 1980s, the Department of Finance determined that the 1939/40 photographs were too out-dated for property tax appraisal purposes. From 1983 to 1988, using 35mm cameras, they photographed every property in the five boroughs, including vacant lots and tax-exempt buildings. They used color film stock producing over 800,000 photographs in both print and negative formats. Taking advantage of then-new technology ca. 1989, they recorded each print as a single frame on Laser Video Disks (LVDs), using analog video capture. The Archives extracted low-resolution tiffs of each frame from the LVDs for viewing in the gallery. High-resolution scans or prints can be ordered from the original negatives.</div>
+        <div id="infoText">
+          <div class="infoTitle">About NYC Tax Photos</div>
+          <div class="infoText">During the years 1939-1941 the New York City Department of Taxation and the Federal Government's Works Progress Administration teamed up to photograph every building in New York City. The purpose of the project was to streamline the task of determining real property values across the five boroughs. What resulted was a unique collection of more than 700,000 photographs that provide an invaluable record of New York City's built environment at a time just before the city was radically changed through the massive public works projects of the 1950s and 60s.</div>
+          <div class="infoText">In the 1980s, the New York City Department of Finance, having decided that the 1939-41 tax photos were too old to be useful, again set out to produce a similar series of building level tax photographs. However, instead of using 35mm cameras the agency set out to utilize a new technology, Laser Video Disks, which were used to capture each building as a single video frame. The series of photos produced are evocative of the era yet lower in quality than the images taken some forty years prior.</div>
+          <br>
+          <div class="infoTitle">About this Application</div>
+          <div class="infoText">Tax Photo Time Warp (TP:TW) was developed to provide a new way to experience the history of Manhattan south of 14th Street through New York City tax photos representative of two eras of the city's history, the 1940s and 1980s. Click on a 3D building to see its tax photo and switch between the 40s and 80s by using the 'Time Warp' switch at the top right of the screen. Find an address by clicking on 'Search'.</div>
+          <div class="infoText">TP:TW was developed with the ArcGIS Maps SDK for Javascript 4.x, the Luna Imaging API, anime.js, 2014 3D building models provided by the NYC Office of Technological Innovation through the NYC Open Data Portal, 3D buildings built after 2014 were created by the author using ArcGIS City Engine and models of ships and planes created by the author using Asset Forge.</div>
+          <div class="infoText">All NYC tax photos copyright © <a href="https://nycma.lunaimaging.com/luna/servlet/NYCMA~5~5" target="_blank">New York City Municipal Archives</a>.</div>
+          <div class="infoText">Application copyright © 2023 <a href="https://www.danielhwatts.com" target="_blank">Daniel H. Watts</a></div>
+        </div>
       </div>
     </div>
 
@@ -98,7 +107,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://js.arcgis.com/4.23/"></script>
+    <script src="https://js.arcgis.com/4.26/"></script>
     <script src="scripts/script.js"></script>
     <script src="scripts/renderers.js"></script>
     

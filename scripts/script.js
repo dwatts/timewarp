@@ -1,4 +1,51 @@
-require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/SceneLayer", "esri/layers/FeatureLayer", /*"esri/layers/WebTileLayer", "esri/Basemap", "esri/widgets/Zoom",*/ "esri/widgets/Search", "esri/geometry/Polygon", /*"esri/tasks/Locator",*/ "esri/Graphic", "esri/layers/GraphicsLayer", "esri/geometry/Point", "esri/core/watchUtils"/*,  "esri/symbols/TextSymbol", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PointSymbol3D"*/], (Map,/* WebScene,*/ SceneView, SceneLayer, FeatureLayer, /*WebTileLayer, Basemap, Zoom,*/ Search, Polygon, /* Locator,*/ Graphic, GraphicsLayer, Point, watchUtils, /*TextSymbol, SimpleMarkerSymbol, PointSymbol3D*/ ) => {
+
+
+require(["esri/Map",
+/*"esri/WebScene",*/
+"esri/views/SceneView",
+"esri/layers/SceneLayer",
+"esri/layers/FeatureLayer",
+"esri/layers/VectorTileLayer",
+/*"esri/layers/WebTileLayer",
+"esri/Basemap", 
+"esri/widgets/Zoom",*/
+"esri/widgets/Search",
+"esri/geometry/Polygon",
+/*"esri/tasks/Locator",*/
+"esri/Graphic", 
+"esri/layers/GraphicsLayer",
+"esri/geometry/Point",
+"esri/core/watchUtils"/*,
+"esri/symbols/TextSymbol",
+"esri/symbols/SimpleMarkerSymbol",
+"esri/symbols/PointSymbol3D"*/],
+
+(Map,
+  /* WebScene,*/
+  SceneView, 
+  SceneLayer, 
+  FeatureLayer, 
+  VectorTileLayer, 
+  /*WebTileLayer,*/
+  /*Basemap,*/ 
+  /*Zoom,*/ 
+  Search, 
+  Polygon,  
+  /*Locator,*/ 
+  Graphic, 
+  GraphicsLayer, 
+  Point, 
+  watchUtils, 
+  /*TextSymbol, 
+  SimpleMarkerSymbol, 
+  PointSymbol3D*/ ) => {
+
+  // Vector Base Map
+
+  /*const tileBaseMap = new VectorTileLayer({
+    url:"https://vectortileservices9.arcgis.com/uX5kr9HIx4qXytm9/arcgis/rest/services/NYC_Basemap/VectorTileServer",
+    opacity: 0.9
+  })*/ 
 
   // Individual Landmarks Boundaries
 
@@ -9,6 +56,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       mode: "on-the-ground",
     },
     popupEnabled: false,
+    outFields: [],
     maxScale: 0,
     minScale: 0,  
     renderer: {
@@ -22,7 +70,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
             },
             outline: {
               color: "#000",
-              width: 2, 
+              width: 5, 
               style: "solid"
             }
           }]
@@ -52,14 +100,14 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
   const desBuildings = new SceneLayer({                    
     url: "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_Buildings/SceneServer", 
-    outFields: ["*"], 
+    outFields: ["one_block", "one_lot", "address"], 
     popupEnabled: false,                   
     renderer: desRenderer40,
     visible: true
   });
 
   var map = new Map({
-      layers: [ manhattanMask, desBuildings, arrowLayer, letterGraphicsLayer, infoGraphicsLayer],
+      layers: [/*tileBaseMap,*/ manhattanMask, desBuildings, arrowLayer, letterGraphicsLayer, infoGraphicsLayer],
       basemap: {
         portalItem: {
           id: "75a08e8cd8b64dcfa6945bb7f624ccc5"
@@ -89,6 +137,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
   const view = new SceneView({
     container: "viewDiv",
     map: map,
+    viewingMode: "global",
     qualityProfile: "medium",
     highlightOptions: highlight40,
     camera: {
@@ -102,17 +151,17 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
     },
     constraints: {
       altitude: {
-        min: 200,
+        min: 400,
         max: 10000,
       },
-      /*tilt: {
-          max: 75
-      }*/
+      tilt: {
+          max: 59
+      }
     },
     environment: {
       background:{
           type: "color", 
-          color: [255,255,255,1]
+          color: [255, 255, 255, 1]
       },
       lighting: {
           directShadowsEnabled: true
@@ -146,6 +195,176 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
       document.getElementById("loaderDiv").style.display="none";
     });
   })
+
+  /*************Address Finder**************/
+
+  const searchSource = [{
+    url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
+    filter: {
+        geometry: new Polygon({
+            "rings": [
+              [
+                [
+                  -74.014273,
+                  40.74473
+            ],
+            [
+              -73.964534,
+              40.72375
+            ],
+            [
+              -73.992435,
+              40.685754
+            ],
+            [
+              -74.042173,
+              40.706746
+            ]
+              ]
+            ],
+            "spatialReference": {
+              "wkid": 4326
+            }
+        }) 
+    },
+    singleLineFieldName: "SingleLine",
+    outFields: ["Addr_type"],
+    name: "Search by Address or Place",
+    placeholder: "Enter an Address or Place",
+    zoomScale: 700,
+    //resultSymbol: marker,
+    resultGraphicEnabled: false,
+    maxSuggestions: 5,
+  }  
+  ];
+
+  const addSearch = new Search({
+  view: view,
+  includeDefaultSources: false,
+  container: "addSearch",
+  locationEnabled: false,
+  outFields: ["Addr_Type"],
+  sources: searchSource,
+  allPlaceholder: "Enter an Address or Place",
+  popupEnabled: false,
+  });
+
+  addSearch.on('search-complete', function(result){
+  if(result.results && result.results.length > 0 && result.results[0].results && result.results[0].results.length > 0){
+    const lat = result.results[0].results[0].feature.geometry.latitude;
+    const long = result.results[0].results[0].feature.geometry.longitude;
+    const address = result.results[0].results[0].name;
+
+    const splitAddress = address.split(",");
+    const finalAddress = splitAddress[0] + ' ';
+
+    const correction = {
+      "St ":"Street",
+      "Ave ": "Avenue",
+      "Pl ": "Place",
+      "Sq": "Square",
+      "Ln": "Lane",
+      "W ": "West ",
+      "E ": "East "
+    }
+
+    const finalAddressFixed = finalAddress.replace(/St |Ave |Pl |Sq |W |E |Ln/g, matched => correction[matched]);
+
+    let initColor;
+
+    if (setImageYear == 1) {
+      initColor = [48,48,48];
+    } else {
+      initColor = [16, 231, 226];
+    };
+
+    //Create address finder label
+
+    const textSymbol = {
+      type: "text", // autocasts as new TextSymbol()
+      color: "#303030",
+      text: finalAddressFixed, 
+      font: {
+        // autocasts as new Font()
+        size: 12,
+        family: "Poppins",
+        weight: "bolder"
+      },
+      haloColor: "#c2c2c2",
+      haloSize: 0.5
+    };
+
+    const point = {
+      type: "point",
+      x: long,
+      y: lat,
+      z: 75
+    }
+
+    const textGraphic = new Graphic({
+      geometry: point,
+      symbol: textSymbol
+    })
+
+    //Create Arrow Graphic
+
+
+    const arrowGraphic = new Graphic({
+      geometry: {
+        type: "point",
+        latitude: lat,
+        longitude: long,
+      },
+      symbol: {
+        type: "point-3d",
+        symbolLayers: [
+          {
+            type: "object",
+            resource: { href: './assets/Arrow.glb'},
+            material: { color: initColor },
+            height: 60,
+            tilt: 0,
+            heading: 120,
+            anchor: "bottom",
+          },
+        ],
+      }
+    });
+
+    arrowLayer.removeAll();
+    arrowLayer.addMany([arrowGraphic, textGraphic]);
+
+    const arrowSymbolLayer = arrowGraphic.symbol.symbolLayers.getItemAt(0);
+
+    const headingAnimation = anime({
+      targets: arrowSymbolLayer,
+      heading: "+=360",
+      duration: 5000,
+      easing: "linear",
+      autoplay: true,
+      loop: true,
+      update: function () {
+        arrowGraphic.symbol = arrowGraphic.symbol.clone();
+        arrowGraphic.symbol.symbolLayers = [arrowSymbolLayer];
+      }
+    });
+
+    headingAnimation.play();
+
+    searchFlag = 0;
+    document.getElementById("search").innerHTML = "Clear";
+    document.getElementById("search").style.fontWeight = 700;
+    document.getElementById("search").style.color = "#ec38bc";
+
+  }else{
+    ""
+  }
+  });
+
+  addSearch.on("search-clear", function(event) {
+  arrowLayer.removeAll();
+  document.getElementById("search").removeAttribute('style');
+  });
 
   /*******HitTest Click Code************/
 
@@ -437,7 +656,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
     document.getElementById("infoHolder").style.display = "flex";
     document.getElementById("cardImageId").src = "#";
     document.getElementById("cardId").style.display="none";
-    document.getElementById("infoText").scroll(0,0);
+    //document.getElementById("infoTextDiv").scroll(0,0);
     
     if (countNumber > 0) {
       highlight && highlight.remove();
@@ -704,12 +923,12 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
     }),
   })
 
-  /*************Boat Graphic / Animation**************/
+  //Boat Graphic / Animation
 
-  var point11 = { latitude:40.735505, longitude:-74.02105}
-  var point12 = { latitude:40.699483, longitude:-74.02496}
+  const point11 = { latitude:40.735505, longitude:-74.02105}
+  const point12 = { latitude:40.699483, longitude:-74.02496}
 
-  var boatGraphicsLayer = new GraphicsLayer({
+  const boatGraphicsLayer = new GraphicsLayer({
     elevationInfo: {
       mode: "relative-to-ground"
     },
@@ -742,7 +961,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
   const boatGeometry = boatGraphic.geometry;
   const boatSymbolLayer = boatGraphic.symbol.symbolLayers.getItemAt(0);
 
-  var animateBoat = anime
+  const animateBoat = anime
   .timeline({
     autoplay: true,
     targets: [boatGeometry, boatSymbolLayer],
@@ -758,16 +977,16 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
   animateBoat.play();
 
-  /*************Boat Graphic Two / Animation**************/ 
+  //Boat Graphic Two / Animation 
 
-  var point21 = { latitude:40.69426, longitude:-74.012585}
-  var point22 = { latitude:40.702973, longitude:-74.000576}
-  var point23 = { latitude:40.705567, longitude:-73.996583}
-  var point24 = { latitude:40.707567, longitude:-73.989951}
-  var point25 = { latitude:40.708864, longitude:-73.975905}
+  const point21 = { latitude:40.69426, longitude:-74.012585}
+  const point22 = { latitude:40.702973, longitude:-74.000576}
+  const point23 = { latitude:40.705567, longitude:-73.996583}
+  const point24 = { latitude:40.707567, longitude:-73.989951}
+  const point25 = { latitude:40.708864, longitude:-73.975905}
 
 
-  var boatGraphicsLayerTwo = new GraphicsLayer({
+  const boatGraphicsLayerTwo = new GraphicsLayer({
     elevationInfo: {
       mode: "relative-to-ground"
     },
@@ -800,7 +1019,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
   const boatGeometryTwo = boatGraphicTwo.geometry;
   const boatSymbolLayerTwo = boatGraphicTwo.symbol.symbolLayers.getItemAt(0);
 
-  var animateBoatTwo = anime
+  const animateBoatTwo = anime
   .timeline({
     autoplay: true,
     targets: [boatGeometryTwo, boatSymbolLayerTwo],
@@ -820,12 +1039,12 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
   animateBoatTwo.play();
 
-  /*************Boat Graphic Three / Animation**************/
+  //Boat Graphic Three / Animation
 
-  var point31 = { latitude:40.701814, longitude:-74.0299152805}
-  var point32 = { latitude:40.728786, longitude:-74.0257328424}
+  const point31 = { latitude:40.701814, longitude:-74.0299152805}
+  const point32 = { latitude:40.728786, longitude:-74.0257328424}
 
-  var boatGraphicsLayerThree = new GraphicsLayer({
+  const boatGraphicsLayerThree = new GraphicsLayer({
     elevationInfo: {
       mode: "relative-to-ground"
     },
@@ -858,7 +1077,7 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
   const boatGeometryThree = boatGraphicThree.geometry;
   const boatSymbolLayerThree = boatGraphicThree.symbol.symbolLayers.getItemAt(0);
 
-  var animateBoatThree = anime
+  const animateBoatThree = anime
   .timeline({
     autoplay: true,
     targets: [boatGeometryThree, boatSymbolLayerThree],
@@ -874,178 +1093,114 @@ require(["esri/Map",/*"esri/WebScene",*/ "esri/views/SceneView", "esri/layers/Sc
 
   animateBoatThree.play();
 
-  /*************Address Finder**************/
+  //Plane Graphic One / Animation
 
-  const addSource = [{
-      /*locator: new Locator({
-        url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer", 
-      }),*/
-      url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
-      filter: {
-          geometry: new Polygon({
-              "rings": [
-                [
-                  [
-                    -74.014273,
-                    40.74473
-              ],
-              [
-                -73.964534,
-                40.72375
-              ],
-              [
-                -73.992435,
-                40.685754
-              ],
-              [
-                -74.042173,
-                40.706746
-              ]
-                ]
-              ],
-              "spatialReference": {
-                "wkid": 4326
-              }
-          }) 
-      },
-      singleLineFieldName: "SingleLine",
-      outFields: ["Addr_type"],
-      name: "Search by Address or Place",
-      placeholder: "Enter an Address or Place",
-      zoomScale: 700,
-      //resultSymbol: marker,
-      resultGraphicEnabled: false,
-      maxSuggestions: 5,
-    }  
-];
+  const pointBP1 = { latitude:40.74258, longitude:-74.007214}
+  const pointBP2 = { latitude:40.689726, longitude:-74.0036488478655}
 
-  const addSearch = new Search({
-    view: view,
-    includeDefaultSources: false,
-    container: "addSearch",
-    locationEnabled: false,
-    outFields: ["Addr_Type"],
-    sources: addSource,
-    allPlaceholder: "Enter an Address or Place",
-    popupEnabled: false,
+  const planeGraphicsLayerOne = new GraphicsLayer({
+    elevationInfo: {
+      mode: "relative-to-ground"
+    },
+    opacity: 0.7
   });
-  
-  addSearch.on('search-complete', function(result){
-    if(result.results && result.results.length > 0 && result.results[0].results && result.results[0].results.length > 0){
-      const lat = result.results[0].results[0].feature.geometry.latitude;
-      const long = result.results[0].results[0].feature.geometry.longitude;
-      const address = result.results[0].results[0].name;
+  map.add(planeGraphicsLayerOne);
 
-      const splitAddress = address.split(",");
-      const finalAddress = splitAddress[0] + ' ';
-
-      const correction = {
-        "St ":"Street",
-        "Ave ": "Avenue",
-        "Pl ": "Place",
-        "Sq": "Square",
-        "Ln": "Lane",
-        "W ": "West ",
-        "E ": "East "
-      }
-
-      const finalAddressFixed = finalAddress.replace(/St |Ave |Pl |Sq|W |E |Ln/g, matched => correction[matched]);
-
-      let initColor;
-
-      if (setImageYear == 1) {
-        initColor = [48,48,48];
-      } else {
-        initColor = [16, 231, 226];
-      };
-
-      /********Create address finder label*********/
-
-      const textSymbol = {
-        type: "text", // autocasts as new TextSymbol()
-        color: "#303030",
-        text: finalAddressFixed, 
-        font: {
-          // autocasts as new Font()
-          size: 12,
-          family: "Poppins",
-          weight: "bolder"
-        },
-        haloColor: "#c2c2c2",
-        haloSize: 0.5
-      };
-
-      const point = {
-        type: "point",
-        x: long,
-        y: lat,
-        z: 75
-      }
-
-      const textGraphic = new Graphic({
-        geometry: point,
-        symbol: textSymbol
-
-      })
-
-      /********Create Arrow Graphic*********/
-
-
-      const arrowGraphic = new Graphic({
-        geometry: {
-          type: "point",
-          latitude: lat,
-          longitude: long,
-        },
-        symbol: {
-          type: "point-3d",
-          symbolLayers: [
-            {
-              type: "object",
-              resource: { href: './assets/Arrow.glb'},
-              material: { color: initColor },
-              height: 60,
-              tilt: 0,
-              heading: 120,
-              anchor: "bottom",
-            },
-          ],
+  const planeGraphicOne = new Graphic({
+    symbol: {
+      type: "point-3d",
+      symbolLayers: [
+        {
+          type: "object",
+          resource: { href: './assets/BiPlane.glb' },
+          height: 12,
+          heading: 180,
+          tilt:0,
+          anchor: "bottom"
         }
-      });
+      ]
+    },
+    geometry: new Point({
+      ...pointBP1,
+      z: 300,
+    })
+  })
 
-      arrowLayer.removeAll();
-      arrowLayer.addMany([arrowGraphic, textGraphic]);
+  planeGraphicsLayerOne.add(planeGraphicOne);
 
-      const arrowSymbolLayer = arrowGraphic.symbol.symbolLayers.getItemAt(0);
+  const planeGeometryOne = planeGraphicOne.geometry;
+  const planeSymbolLayerOne = planeGraphicOne.symbol.symbolLayers.getItemAt(0);
 
-      const headingAnimation = anime({
-        targets: arrowSymbolLayer,
-        heading: "+=360",
-        duration: 5000,
-        easing: "linear",
-        autoplay: true,
-        loop: true,
-        update: function () {
-          arrowGraphic.symbol = arrowGraphic.symbol.clone();
-          arrowGraphic.symbol.symbolLayers = [arrowSymbolLayer];
-        }
-      });
-
-      headingAnimation.play();
-
-      searchFlag = 0;
-      document.getElementById("search").innerHTML = "Clear";
-      document.getElementById("search").style.fontWeight = 700;
-      document.getElementById("search").style.color = "#ec38bc";
-
-    }else{
-      ""
+  const animatePlaneOne = anime
+  .timeline({
+    autoplay: true,
+    targets: [planeGeometryOne, planeSymbolLayerOne],
+    loop: true,
+    duration: 50000,
+    update: function() {
+      planeGraphicOne.geometry = planeGeometryOne.clone();
+      planeGraphicOne.symbol = planeGraphicOne.symbol.clone();
+      planeGraphicOne.symbol.symbolLayers = [planeSymbolLayerOne];
     }
-  });
+  })
+  .add({ ...pointBP2, easing: "linear"})
 
-  addSearch.on("search-clear", function(event) {
-    arrowLayer.removeAll();
-    document.getElementById("search").removeAttribute('style');
+  animatePlaneOne.play();
+
+  //Plane Graphic Two / Animation
+
+  const pointBP3 = { latitude:40.692322, longitude:-73.986250691804}
+  const pointBP4 = { latitude:40.732749,  longitude:-74.024184}
+
+  const planeGraphicsLayerTwo = new GraphicsLayer({
+    elevationInfo: {
+      mode: "relative-to-ground"
+    },
+    opacity: 0.7
   });
+  map.add(planeGraphicsLayerTwo);
+
+  const planeGraphicTwo = new Graphic({
+    symbol: {
+      type: "point-3d",
+      symbolLayers: [
+        {
+          type: "object",
+          resource: { href: './assets/MonoPlane.glb' },
+          height: 11,
+          heading: 320,
+          tilt:0,
+          anchor: "bottom"
+        }
+      ]
+    },
+    geometry: new Point({
+      ...pointBP3,
+      z: 500,
+    })
+  })
+
+  planeGraphicsLayerTwo.add(planeGraphicTwo);
+
+  const planeGeometryTwo = planeGraphicTwo.geometry;
+  const planeSymbolLayerTwo = planeGraphicTwo.symbol.symbolLayers.getItemAt(0);
+
+  const animatePlaneTwo = anime
+  .timeline({
+    autoplay: true,
+    targets: [planeGeometryTwo, planeSymbolLayerTwo],
+    loop: true,
+    duration: 40000,
+    update: function() {
+      planeGraphicTwo.geometry = planeGeometryTwo.clone();
+      planeGraphicTwo.symbol = planeGraphicTwo.symbol.clone();
+      planeGraphicTwo.symbol.symbolLayers = [planeSymbolLayerTwo];
+    }
+  })
+  .add({ ...pointBP4, z: 400,  easing: "linear"})
+
+  animatePlaneTwo.play();
+
+  
 
 });
