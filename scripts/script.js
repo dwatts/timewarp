@@ -99,7 +99,7 @@ require(["esri/Map",
   });
 
   const desBuildings = new SceneLayer({                    
-    url: "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_Buildings/SceneServer", 
+    url: "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_MN_Buildings/SceneServer", 
     outFields: ["one_block", "one_lot", "address"], 
     popupEnabled: false,                   
     renderer: desRenderer40,
@@ -138,7 +138,7 @@ require(["esri/Map",
     container: "viewDiv",
     map: map,
     viewingMode: "global",
-    qualityProfile: "medium",
+    qualityProfile: "high",
     highlightOptions: highlight40,
     camera: {
       position: {
@@ -376,7 +376,7 @@ require(["esri/Map",
   view.on("immediate-click", (event) => {
     view.hitTest(event).then((hitTestResult) => {
 
-      if (hitTestResult.results.length > 0 && hitTestResult.results[0].graphic.layer.url == "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_Buildings/SceneServer" && setImageYear == 1) {
+      if (hitTestResult.results.length > 0 && hitTestResult.results[0].graphic.layer.url == "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_MN_Buildings/SceneServer" && setImageYear == 1) {
 
         //countNumber = 1;
 
@@ -494,7 +494,7 @@ require(["esri/Map",
 
 /****************Begin 1980s Code*****************/
 
-      } else if (hitTestResult.results.length > 0 && hitTestResult.results[0].graphic.layer.url == "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_Buildings/SceneServer" && setImageYear == 0) {
+      } else if (hitTestResult.results.length > 0 && hitTestResult.results[0].graphic.layer.url == "https://tiles.arcgis.com/tiles/uX5kr9HIx4qXytm9/arcgis/rest/services/All_MN_Buildings/SceneServer" && setImageYear == 0) {
 
         document.getElementById("cardImageId").src = "#";
 
